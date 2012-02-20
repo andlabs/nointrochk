@@ -22,14 +22,23 @@ type toktype int
 const (
 	tokError toktype = iota
 	tokEOF
-	tokWord
-	tokString
+	tokText
 	tokChar
 )
 
 type token struct {
 	typ	toktype
 	val	string
+}
+
+func (t token) String() string {
+	k := map[toktype]string{
+		tokError:	"error",
+		tokEOF:	"eof",
+		tokText:	"text",
+		tokChar:	"char",
+	}
+	return fmt.Sprintf("%s %q", k[t.typ], t.val)
 }
 
 type lexer struct {
@@ -107,7 +116,7 @@ func lexWord(l *lexer) stateFn {
 			break
 		}
 	}
-	l.emit(tokWord)
+	l.emit(tokText)
 	return lexMain
 }
 
@@ -123,7 +132,7 @@ func lexString(l *lexer) stateFn {
 			break
 		}
 	}
-	l.emit(tokString)
+	l.emit(tokText)
 	l.next()				// NOW skip "
 	return lexMain
 }	
@@ -162,17 +171,6 @@ func lex(src io.Reader) (*lexer, <-chan token) {
 }
 
 // testing
-func (t token) String() string {
-	k := map[toktype]string{
-		tokError:	"error",
-		tokEOF:	"eof",
-		tokWord:	"word",
-		tokString:	"string",
-		tokChar:	"char",
-	}
-	return fmt.Sprintf("%s %q", k[t.typ], t.val)
-}
-
 func main() {
 	f, _ := os.Open(os.Args[1])
 	defer f.Close();
