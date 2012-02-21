@@ -10,10 +10,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-
-	// testing only! TODO
 	"fmt"
-	"os"
 )
 
 const eof = utf8.RuneError
@@ -160,22 +157,15 @@ func (l *lexer) run() {
 	close(l.toks)	// signal end of input
 }
 
-func lex(src io.Reader) (*lexer, <-chan token) {
-	b, _ := ioutil.ReadAll(src)		// TODO errors
+func lex(src io.Reader) (*lexer, error) {
+	b, err := ioutil.ReadAll(src)
+	if err != nil {
+		return nil, err
+	}
 	l := &lexer{
 		input:	string(b),
 		toks: 	make(chan token),
 	}
 	go l.run()
-	return l, l.toks
-}
-
-// testing
-func main() {
-	f, _ := os.Open(os.Args[1])
-	defer f.Close();
-	_, m := lex(f)
-	for t := range m {
-		fmt.Println(t)
-	}
+	return l, nil
 }

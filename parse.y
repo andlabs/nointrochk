@@ -1,7 +1,9 @@
-// clrmamepro datfile processor: lexical analyzer
+// clrmamepro datfile processor: parser
 // 20 feb 2012
 %{
 package main//clrmamepro
+
+import "fmt"		// needed by goyacc
 
 type Block struct {
 	Name	string
@@ -10,16 +12,39 @@ type Block struct {
 	Error		error
 }
 
-type yySymType Block
+func mk(b *Block) {
+	if b.Texts == nil {
+		b.Texts = make(map[string]string)
+	}
+	if b.Blocks == nil {
+		b.Blocks = make(map[string]Block)
+	}
+}
 %}
 
-%token TEXT		// used for both regular words and strings
+%union {
+	block	Block
+	str		string
+}
 
-%start main
+%token <str> TEXT		// used for both regular words and strings
+%type <block> block blockcontents
+
+%start start
 %%
-main:
-		block
-	|	main block
+start:
+		blocks					{
+			close(yylex.(*datparse).blocks)
+		}
+	;
+
+blocks:
+		block					{
+			yylex.(*datparse).blocks <- $1
+		}
+	|	blocks block				{
+			yylex.(*datparse).blocks <- $2
+		}
 	;
 
 block:
@@ -31,9 +56,11 @@ block:
 
 blockcontents:
 		TEXT TEXT				{
+			mk(&$$)
 			$$.Texts[$1] = $2
 		}
 	|	block					{
+			mk(&$$)
 			$$.Blocks[$1.Name] = $1
 		}
 	|	blockcontents TEXT TEXT		{
