@@ -95,18 +95,3 @@ func (b Block) asString(ntab int) string {
 func (b Block) String() string {
 	return b.asString(0)
 }
-
-func main() {
-	d, _ := OpenDatfile(os.Args[1])
-	for {
-		b, err := d.GetBlock()
-		if b == nil && err == nil {
-			break
-		}
-		if b != nil {
-			fmt.Println(b)
-		} else {
-			log.Fatalf("%v\n", err)
-		}
-	}
-}
