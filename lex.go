@@ -86,7 +86,8 @@ type stateFn func(l *lexer) stateFn
 func isWordChar(r rune) bool {
 	return ('0' <= r && r <= '9') ||
 		('A' <= r && r <= 'Z') ||
-		('a' <= r && r <= 'z')
+		('a' <= r && r <= 'z') ||
+		r == '-'
 }
 
 func lexEOF(l *lexer) stateFn {
