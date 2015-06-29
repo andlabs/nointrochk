@@ -5,6 +5,7 @@ import (
 	"io"
 	"text/scanner"
 	"strconv"
+	"unicode"
 )
 
 type lexerr struct {
@@ -27,6 +28,14 @@ func newLexer(r io.Reader, filename string) *lexer {
 	}
 	l.scanner.Mode = scanner.ScanIdents | scanner.ScanStrings
 	l.scanner.Position.Filename = filename
+	l.scanner.IsIdentRune = func(ch rune, i int) bool {
+		if ch == '-' {
+			return true
+		}
+		// unfortunately there's no exported function for this in Go (TODO); we had to copy this from the text/scanner source (TODO licensing)
+		// the only difference is that we allow a digit to start an identifier
+		return ch == '_' || unicode.IsLetter(ch) || unicode.IsDigit(ch)
+	}
 	return l
 }
 
