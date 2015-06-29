@@ -16,23 +16,7 @@ import (
 	"github.com/andlabs/nointrochk/clrmamepro"
 )
 
-// fields in dat file
-const (
-	fGame = "game"
-	fROM = "rom"
-	fFilename = "name"
-	fSize = "size"
-	fCRC32 = "crc"
-	fMD5 = "md5"
-	fSHA1 = "sha1"
-)
-
-var nroms, ngood, nbad, nmiss uint
 var folder, filename, basename string
-
-func alert(method string) {
-	fmt.Printf("%-10s %s\n", method, basename)
-}
 
 func passesChecksum(method hash.Hash, mname string, expected string) bool {
 	// according to the crypto hash testing code in the Go source code, this is what we do
@@ -46,21 +30,6 @@ func passesChecksum(method hash.Hash, mname string, expected string) bool {
 	io.Copy(method, f)
 	if strings.ToUpper(fmt.Sprintf("%x", method.Sum(nil))) != strings.ToUpper(expected) {
 		alert("BAD " + strings.ToUpper(mname))
-		nbad++
-		return false
-	}
-	return true
-}
-
-func fileExistsAndSameSize(size string) bool {
-	f, err := os.Stat(filename)
-	if err != nil {
-		alert("MISSING")
-		nmiss++
-		return false
-	}
-	if fmt.Sprintf("%d", f.Size()) != size {
-		alert("BAD SIZE")
 		nbad++
 		return false
 	}

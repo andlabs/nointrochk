@@ -6,6 +6,10 @@ import (
 	"os"
 )
 
+func alert(method string, romname string) {
+	fmt.Printf("%-10s %s\n", method, romname)
+}
+
 func die(format string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, "error ")
 	fmt.Fprintf(os.Stderr, format, args...)
