@@ -7,6 +7,9 @@ import (
 	"github.com/andlabs/nointrochk/clrmamepro"
 )
 
+// TODO
+// - parallel execution
+
 func alert(method string, romname string) {
 	fmt.Printf("%-10s %s\n", method, romname)
 }
