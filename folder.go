@@ -11,16 +11,19 @@ import (
 var files map[string]struct{}
 var filesLock sync.Mutex
 
-func collectFilenames(path string) (err error) {
+func collectFilenames(folder string) (err error) {
 	filesLock.Lock()
 	defer filesLock.Unlock()
 
 	files = make(map[string]struct{})
-	return filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+	return filepath.Walk(folder, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-		files[path] = struct{}{}
+		if path == folder {		// don't include folder in the files map
+			return nil
+		}
+		files[filepath.Base(path)] = struct{}{}
 		return nil
 	})
 }
