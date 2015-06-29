@@ -20,14 +20,14 @@ const (
 	fSHA1 = "sha1"
 )
 
-void nroms, ngood, nbad, nmiss uint
+var nroms, ngood, nbad, nmiss uint
 
-func checksumsPass(romname string, rom *Block, f io.Reader) bool {
+func checksumsPass(romname string, rom *clrmamepro.Block, f io.Reader) bool {
 	// TODO
 	return true
 }
 
-func check(b *Block, folder string) {
+func check(b *clrmamepro.Block, folder string) {
 	if b.Name != fGame {
 		return
 	}

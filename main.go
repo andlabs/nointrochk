@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"github.com/andlabs/nointrochk/clrmamepro"
 )
 
 func alert(method string, romname string) {
@@ -30,9 +31,27 @@ func main() {
 	datfile := os.Args[1]
 	folder := os.Args[2]
 
-	err := collectFilenames(folder)
+	f, err := os.Open(datfile)
+	if err != nil {
+		die("opening datfile: %v", err)
+	}
+	defer f.Close()
+
+	blocks, errs := clrmamepro.Read(f, datfile)
+	if errs != nil {
+		for _, e := range errs {
+			fmt.Fprintf(os.Stderr, "%s\n", e)
+		}
+		die("reading datfile (errors above)")
+	}
+
+	err = collectFilenames(folder)
 	if err != nil {
 		die("collecting filenames: %v", err)
+	}
+
+	for _, b := range blocks {
+		check(b, folder)
 	}
 
 	printLeftovers()

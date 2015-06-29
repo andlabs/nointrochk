@@ -16,7 +16,7 @@ func collectFilenames(path string) (err error) {
 	defer filesLock.Unlock()
 
 	files = make(map[string]struct{})
-	return filepath.Walk(path, func(path string, info os.FileInfo, err error) {
+	return filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -52,6 +52,6 @@ func printLeftovers() {
 	}
 	sort.Strings(m)
 	for _, f := range m {
-		alert("EXTRA", m)
+		alert("EXTRA", f)
 	}
 }
