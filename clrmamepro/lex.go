@@ -1,16 +1,15 @@
-// clrmamepro datfile processor: lexical analyzer
 // 19 feb 2012
 // see also Rob Pike's talk "Lexical Scanning in Go"
 
-package main//clrmamepro
+package clrmamepro
 
 import (
+	"fmt"
+	"io"
+	"io/ioutil"
 	"unicode"
 	"unicode/utf8"
 	"errors"
-	"io"
-	"io/ioutil"
-	"fmt"
 )
 
 const eof = utf8.RuneError

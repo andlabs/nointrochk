@@ -1,6 +1,6 @@
 // 20 feb 2012
 %{
-package main//clrmamepro
+package clrmamepro
 
 type Block struct {
 	Name	string

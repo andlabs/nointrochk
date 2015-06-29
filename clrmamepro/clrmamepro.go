@@ -1,6 +1,6 @@
 // clrmamepro datfile processor
 // 21 feb 2012
-package main//clrmamepro
+package clrmamepro
 
 import (
 	"errors"
@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"log"
 )
+
+//go:generate go tool yacc parse.y
 
 type datparse struct {
 	l		*lexer
