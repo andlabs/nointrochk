@@ -3,8 +3,8 @@
 package clrmamepro
 
 import (
+	"io"
 	"errors"
-	"os"
 
 	// testing
 	"fmt"
@@ -44,16 +44,10 @@ type Datfile struct {
 	dp		*datparse
 }
 
-func OpenDatfile(filename string) (d *Datfile, err error) {
-	f, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
+func NewDatfile(r io.Reader) (d *Datfile, err error) {
 	d = new(Datfile)
 	d.dp = new(datparse)
-	d.dp.l, err = lex(f)
+	d.dp.l, err = lex(r)
 	if err != nil {
 		return nil, err
 	}
