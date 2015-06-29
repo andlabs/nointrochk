@@ -36,7 +36,7 @@ func (l *lexer) Lex(lval *yySymType) int {
 	case scanner.EOF:
 		return 0
 	case scanner.Ident:
-		lval.String = l.scanner.TokenText()
+		lval.str = l.scanner.TokenText()
 		return tokTEXT
 	case scanner.String:
 		ss := l.scanner.TokenText()
@@ -45,7 +45,7 @@ func (l *lexer) Lex(lval *yySymType) int {
 		if err != nil {
 			l.Error(err.Error())
 		}
-		lval.String = ss
+		lval.str = ss
 		return tokTEXT
 	}
 	return int(r)

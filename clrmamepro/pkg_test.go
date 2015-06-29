@@ -108,28 +108,20 @@ var expected = []*Block{
 
 func TestClrmamepro(t *testing.T) {
 	r := strings.NewReader(example)
-	d, err := NewDatfile(r)
-	if err != nil {
-		t.Fatalf("error creating new datfile: %v", err)
-	}
-	for i, e := range expected {
-		// TODO change to Next()
-		b, err := d.GetBlock()
-		if err != nil {
-			t.Fatalf("error reading block: %v", err)
+	blocks, errs := Read(r, "<test data>")
+	if errs != nil {
+		t.Errorf("error reading datfile:")
+		for _, e := range errs {
+			t.Errorf("%s", e)
 		}
-		if b == nil {
-			t.Fatalf("unexpected end of stream reading block %d", i)
-		}
-		if !reflect.DeepEqual(b, e) {
-			t.Fatalf("block %d differs:\nexpected %#v\ngot %#v", i, e, b)
-		}
+		t.FailNow()
 	}
-	b, err := d.GetBlock()
-	if err != nil {
-		t.Fatalf("error finishing reading blocks: %v", err)
+	if len(blocks) != len(expected) {
+		t.Fatalf("block count mismatch: expected %d, got %d\n", len(expected), len(blocks))
 	}
-	if b != nil {
-		t.Fatalf("another block was returned when no more were expected")
+	for i, _ := range expected {
+		if !reflect.DeepEqual(blocks[i], expected[i]) {
+			t.Fatalf("block %d differs:\nexpected %#v\ngot %#v", i, expected[i], blocks[i])
+		}
 	}
 }

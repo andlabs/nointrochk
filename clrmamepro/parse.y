@@ -33,12 +33,12 @@ start:
 		}
 	|	start block					{
 			l := yylex.(*lexer)
-			l.blocks = append(l.blocks, $1)
+			l.blocks = append(l.blocks, $2)
 		}
 	;
 
 block:
-		tokText '(' blockcontents ')'		{
+		tokTEXT '(' blockcontents ')'		{
 			$$ = $3
 			$$.Name = $1
 		}
