@@ -54,5 +54,9 @@ func main() {
 		check(b, folder)
 	}
 
+	fmt.Printf("%d ROMs, %d good, %d bad, %d missing (%f%% good)\n",
+		nroms, ngood, nbad, nmiss,
+		(float64(ngood) / float64(nroms)) * 100.0)
+
 	printLeftovers()
 }
