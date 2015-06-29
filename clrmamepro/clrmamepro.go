@@ -5,10 +5,6 @@ package clrmamepro
 import (
 	"io"
 	"errors"
-
-	// testing
-	"fmt"
-	"log"
 )
 
 //go:generate go tool yacc parse.y
@@ -66,30 +62,3 @@ func (d *Datfile) GetBlock() (*Block, error) {
 	}
 	return b, nil
 }
-
-
-// testing
-func (b Block) asString(ntab int) string {
-	line := func(s string) string {
-		k := ""
-		for i := ntab; i != 0; i-- {
-			k += "\t"
-		}
-		return k + s + "\n"
-	}
-	s := line(b.Name + " (")
-	for i, x := range b.Texts {
-		s += line("\t" + i + " " + fmt.Sprintf("%q", x))
-	}
-	for _, x := range b.Blocks {
-		s += x.asString(ntab  + 1)
-	}
-	s += line(")")
-	return s
-}
-
-/*TODO
-func (b Block) String() string {
-	return b.asString(0)
-}
-*/
