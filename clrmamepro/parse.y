@@ -5,22 +5,20 @@ package clrmamepro
 type Block struct {
 	Name	string
 	Texts	map[string]string
-	Blocks	map[string]Block
+	Blocks	map[string]*Block
 	Error		error
 }
 
-func mk(b *Block) {
-	if b.Texts == nil {
-		b.Texts = make(map[string]string)
-	}
-	if b.Blocks == nil {
-		b.Blocks = make(map[string]Block)
-	}
+func makeBlock() *Block {
+	b := new(Block)
+	b.Texts = make(map[string]string)
+	b.Blocks = make(map[string]*Block)
+	return b
 }
 %}
 
 %union {
-	block	Block
+	block	*Block
 	str		string
 }
 
@@ -53,11 +51,11 @@ block:
 
 blockcontents:
 		TEXT TEXT				{
-			mk(&$$)
+			$$ = makeBlock()
 			$$.Texts[$1] = $2
 		}
 	|	block					{
-			mk(&$$)
+			$$ = makeBlock()
 			$$.Blocks[$1.Name] = $1
 		}
 	|	blockcontents TEXT TEXT		{

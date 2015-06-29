@@ -117,7 +117,7 @@ func TestClrmamepro(t *testing.T) {
 			t.Fatalf("unexpected end of stream reading block %d", i)
 		}
 		// TODO
-		t.Log(b)
+		t.Log(b, e)
 	}
 	b, err := d.GetBlock()
 	if err != nil {

@@ -15,7 +15,7 @@ import (
 
 type datparse struct {
 	l		*lexer
-	blocks	chan Block
+	blocks	chan *Block
 	err		error
 }
 
@@ -51,7 +51,7 @@ func NewDatfile(r io.Reader) (d *Datfile, err error) {
 	if err != nil {
 		return nil, err
 	}
-	d.dp.blocks = make(chan Block)
+	d.dp.blocks = make(chan *Block)
 	go yyParse(d.dp)
 	return d, nil
 }
@@ -64,7 +64,7 @@ func (d *Datfile) GetBlock() (*Block, error) {
 		}
 		return nil, nil		// else eof
 	}
-	return &b, nil
+	return b, nil
 }
 
 
