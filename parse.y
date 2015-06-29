@@ -1,9 +1,6 @@
-// clrmamepro datfile processor: parser
 // 20 feb 2012
 %{
 package main//clrmamepro
-
-import "fmt"		// needed by goyacc
 
 type Block struct {
 	Name	string

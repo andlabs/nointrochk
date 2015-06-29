@@ -1,4 +1,3 @@
-// nointrochk:  check an (extracted) no-intro ROM set against a clrmamepro dat file
 // 22 feb 2012
 
 package main
@@ -73,7 +72,7 @@ func do(b Block) {
 
 	stats := b.Blocks[fROM]
 	basename = stats.Texts[fFilename]
-	filename = folder + string(os.PathSeparator) + basename
+	filename = filepath.Join(folder, basename)
 	good = fileExistsAndSameSize(stats.Texts[fSize])
 	good = good && passesChecksum(crc32.NewIEEE(), "crc32", stats.Texts[fCRC32])
 	good = good && passesChecksum(md5.New(), "md5", stats.Texts[fMD5])
@@ -106,5 +105,5 @@ func main() {
 	}
 	fmt.Printf("%d ROMs, %d good, %d bad, %d missing (%f%% good)\n",
 		nroms, ngood, nbad, nmiss,
-		(float64(ngood)/float64(nroms))*100.)
+		(float64(ngood) / float64(nroms)) * 100.0)
 }
