@@ -1,3 +1,5 @@
+// +build omit
+
 // 22 feb 2012
 
 package main
