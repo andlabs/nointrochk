@@ -88,6 +88,8 @@ func (b Block) asString(ntab int) string {
 	return s
 }
 
+/*TODO
 func (b Block) String() string {
 	return b.asString(0)
 }
+*/
