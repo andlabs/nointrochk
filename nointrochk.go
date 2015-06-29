@@ -13,7 +13,7 @@ import (
 	"crypto/sha1"
 	"log"
 
-//	"clrmamepro"
+	"github.com/andlabs/nointrochk/clrmamepro"
 )
 
 // fields in dat file
