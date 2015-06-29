@@ -32,7 +32,7 @@ func (d *datparse) Lex(lval *yySymType) int {
 }
 
 func (d *datparse) Error(e string) {
-log.Fatalf("ERROR! %v\n", e)
+//log.Fatalf("ERROR! %v\n", e)
 	d.err = errors.New(e)
 }
 
